@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fff0f3; /* Warm, soft background */
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 4rem;
+            background: linear-gradient(45deg, #FF6A88, #FF9A8B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(255, 106, 136, 0.15);
+            margin-top: 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        h2 {
+            color: #444;
+            font-size: 1.8rem;
+            margin-top: 0;
+        }
+
+        p {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: #555;
+        }
+
+        .discord-tag {
+            margin-top: 30px;
+            padding: 15px 25px;
+            background: #5865F2; /* Discord Blurple */
+            color: white;
+            border-radius: 12px;
+            display: inline-block;
+            font-size: 1.1rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
+            transition: transform 0.2s ease;
+        }
+
+        .discord-tag:hover {
+            transform: scale(1.05);
+            cursor: default;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="confetti-canvas"></canvas>
+    
+    <div class="container">
+        <h1>Happy Birthday! 🎉</h1>
+        
+        <div class="card">
+            <h2>To an awesome friend,</h2>
+            <p>We might be in different time zones and only know each other through a screen, but you're genuinely one of the best people I've met online.</p>
+            <p>Thank you for all the late-night chats, the random shared links, and the great times in voice channels. Distance doesn't make a friendship any less real.</p>
+            <p>Wishing you a birthday with zero lag, top-tier loot, and an amazing year ahead!</p>
+            
+            <div class="discord-tag">🎮 Let's hop on VC later to celebrate! 🎧</div>
+        </div>
+    </div>
+
+    <script>
+        // Vanilla JS Confetti Animation
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const confetti = [];
+        // Warm palette + a pop of Discord blue
+        const colors = ['#FF6A88', '#FF9A8B', '#FFC371', '#5865F2', '#FFD166'];
+
+        for (let i = 0; i < 150; i++) {
+            confetti.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                size: Math.random() * 10 + 6,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                speed: Math.random() * 3 + 2,
+                angle: Math.random() * 360,
+                spin: Math.random() * 0.2 - 0.1
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            confetti.forEach(c => {
+                c.y += c.speed;
+                c.angle += c.spin;
+                
+                ctx.save();
+                ctx.translate(c.x, c.y);
+                ctx.rotate(c.angle);
+                ctx.fillStyle = c.color;
+                ctx.fillRect(-c.size / 2, -c.size / 2, c.size, c.size);
+                ctx.restore();
+
+                // Reset confetti when it falls off screen
+                if (c.y > canvas.height) {
+                    c.y = -20;
+                    c.x = Math.random() * canvas.width;
+                }
+            });
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
