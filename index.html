@@ -76,35 +76,13 @@
             font-size: 1.1rem;
             font-weight: bold;
             box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, background 0.2s;
+            cursor: pointer;
         }
 
         .discord-tag:hover {
             transform: scale(1.05);
-            cursor: default;
-        }
-
-        /* Floating Music Button Styles */
-        .music-button {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            padding: 15px 25px;
-            background: #FF6A88;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 106, 136, 0.4);
-            transition: transform 0.2s, background 0.2s;
-            z-index: 10000;
-        }
-
-        .music-button:hover {
-            transform: scale(1.1);
-            background: #FF9A8B;
+            background: #4752C4; /* Slightly darker on hover */
         }
     </style>
 </head>
@@ -126,12 +104,10 @@
             <p>Thank you for all the late-night chats, the random shared links, and the great times in voice channels. Distance doesn't make a friendship any less real.</p>
             <p>Wishing you a birthday with zero lag, top-tier loot, and an amazing year ahead!</p>
             
-            <div class="discord-tag">🎮 Let's hop on VC later to celebrate! 🎧</div>
+            <!-- Clickable Discord tag that acts as the music button -->
+            <div id="discord-music-btn" class="discord-tag">🎮 Let's hop on VC later to celebrate! 🎧</div>
         </div>
     </div>
-
-    <!-- The interactive music button -->
-    <button id="music-btn" class="music-button">🎵 Play Music</button>
 
     <script>
         // Vanilla JS Confetti Animation
@@ -141,6 +117,7 @@
         canvas.height = window.innerHeight;
 
         const confetti = [];
+        // Warm palette + a pop of Discord blue
         const colors = ['#FF6A88', '#FF9A8B', '#FFC371', '#5865F2', '#FFD166'];
 
         for (let i = 0; i < 150; i++) {
@@ -168,6 +145,7 @@
                 ctx.fillRect(-c.size / 2, -c.size / 2, c.size, c.size);
                 ctx.restore();
 
+                // Reset confetti when it falls off screen
                 if (c.y > canvas.height) {
                     c.y = -20;
                     c.x = Math.random() * canvas.width;
@@ -178,27 +156,28 @@
         
         animate();
 
+        // Handle window resize
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         });
 
-        // Music Button Logic
-        const musicBtn = document.getElementById('music-btn');
+        // Music Button Logic using the Discord Tag
+        const discordBtn = document.getElementById('discord-music-btn');
         const bgMusic = document.getElementById('birthday-music');
 
-        musicBtn.addEventListener('click', () => {
+        discordBtn.addEventListener('click', () => {
             if (bgMusic.paused) {
                 // Play the music
                 bgMusic.play().catch(error => {
                     console.error("Audio playback failed. Make sure the mp3 file is in the correct folder.", error);
                     alert("Please make sure your mp3 file is saved in the same folder as this code!");
                 });
-                musicBtn.innerHTML = '⏸️ Pause Music';
+                discordBtn.innerHTML = '⏸️ Playing Music... (See you in VC later!) 🎧';
             } else {
                 // Pause the music
                 bgMusic.pause();
-                musicBtn.innerHTML = '🎵 Play Music';
+                discordBtn.innerHTML = "🎮 Let's hop on VC later to celebrate! 🎧";
             }
         });
     </script>
